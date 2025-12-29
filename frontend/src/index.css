@@ -1,0 +1,52 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f0f2f5;
+  color: #1d2129;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* 全局滚动条美化 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background: #c9cdd4;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Arco Design Override */
+.arco-layout {
+  height: 100vh;
+}
+
+.logo {
+  transition: all 0.3s cubic-bezier(0.34, 0.69, 0.1, 1);
+}
+
+/* 玻璃拟态卡片效果辅助类 */
+.glass-card {
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* 渐变文字 */
+.gradient-text {
+  background: linear-gradient(135deg, #165DFF 0%, #722ED1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
