@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Session
 from app.models.plan import TimelineEvent
-from app.schemas.plan import TimelineEventBase
 
 class TimelineService:
     @staticmethod

@@ -141,19 +141,23 @@ const PatientList = () => {
 
     return (
         <Card
-            title="患者管理"
+            title={<span style={{ fontWeight: 600 }}>患者管理</span>}
+            className="glass-card"
+            bordered={false}
+            headerStyle={{ borderBottom: '1px solid rgba(229, 230, 235, 0.5)' }}
             extra={
                 <Button
                     type="primary"
                     icon={<IconPlus />}
                     onClick={() => setCreateModalVisible(true)}
+                    style={{ borderRadius: 8, padding: '0 20px', boxShadow: '0 4px 10px rgba(22,93,255, 0.3)' }}
                 >
                     新增患者
                 </Button>
             }
         >
             {/* 筛选区 */}
-            <div style={{ marginBottom: 16 }}>
+            <div style={{ marginBottom: 24, padding: '16px', background: 'rgba(247, 248, 250, 0.6)', borderRadius: 8 }}>
                 <Row gutter={16} align="center">
                     <Col span={8}>
                         <Input.Search
@@ -163,13 +167,14 @@ const PatientList = () => {
                             onSearch={handleSearch}
                             onPressEnter={handleSearch}
                             allowClear
+                            style={{ borderRadius: 4, background: '#fff' }}
                         />
                     </Col>
                     <Col span={4}>
                         <Select
                             placeholder="性别筛选"
                             allowClear
-                            style={{ width: '100%' }}
+                            style={{ width: '100%', borderRadius: 4, background: '#fff' }}
                             value={filter.gender}
                             onChange={handleGenderChange}
                         >
@@ -181,7 +186,7 @@ const PatientList = () => {
                         <Select
                             placeholder="会员等级"
                             allowClear
-                            style={{ width: '100%' }}
+                            style={{ width: '100%', borderRadius: 4, background: '#fff' }}
                             value={filter.level}
                             onChange={handleLevelChange}
                         >
@@ -192,7 +197,7 @@ const PatientList = () => {
                         </Select>
                     </Col>
                     <Col span={4}>
-                        <Button icon={<IconRefresh />} onClick={handleReset}>
+                        <Button icon={<IconRefresh />} onClick={handleReset} style={{ borderRadius: 4 }}>
                             重置
                         </Button>
                     </Col>
@@ -201,14 +206,16 @@ const PatientList = () => {
 
             {/* 批量操作栏 */}
             {selectedRowKeys.length > 0 && (
-                <div style={{ marginBottom: 16, padding: '10px 16px', background: '#e8f3ff', borderRadius: 4 }}>
+                <div style={{ marginBottom: 16, padding: '12px 16px', background: 'rgba(232, 243, 255, 0.6)', borderRadius: 8, border: '1px solid #165DFF' }}>
                     <Space>
-                        <span>已选择 <strong>{selectedRowKeys.length}</strong> 项</span>
+                        <span style={{ color: '#165DFF' }}>已选择 <strong>{selectedRowKeys.length}</strong> 项</span>
                         <Button
-                            type="outline"
+                            type="primary"
+                            status="success"
                             size="small"
                             icon={<IconSend />}
                             onClick={handleBatchSendSurvey}
+                            style={{ borderRadius: 4 }}
                         >
                             批量发送问卷
                         </Button>
@@ -217,10 +224,11 @@ const PatientList = () => {
                             onOk={handleBatchDelete}
                         >
                             <Button
-                                type="outline"
+                                type="primary"
                                 status="danger"
                                 size="small"
                                 icon={<IconDelete />}
+                                style={{ borderRadius: 4 }}
                             >
                                 批量删除
                             </Button>
@@ -247,6 +255,10 @@ const PatientList = () => {
                     onChange: (keys) => setSelectedRowKeys(keys),
                     checkAll: true,
                 }}
+                border={false}
+                rowClassName={() => 'table-row-hover'}
+                pagination={{ showTotal: true, pageSize: 10, simple: true }}
+                noDataElement={<div style={{ padding: 40, textAlign: 'center', color: 'gray' }}>暂无数据</div>}
             />
 
             {/* 新建患者弹窗 */}
@@ -256,17 +268,17 @@ const PatientList = () => {
                 onCancel={() => setCreateModalVisible(false)}
                 onOk={handleCreatePatient}
                 confirmLoading={createLoading}
-                style={{ width: 600 }}
+                style={{ width: 600, borderRadius: 12 }}
             >
                 <Form form={form} layout="vertical">
-                    <Row gutter={16}>
+                    <Row gutter={24}>
                         <Col span={12}>
                             <Form.Item
                                 label="姓名"
                                 field="full_name"
                                 rules={[{ required: true, message: '请输入姓名' }]}
                             >
-                                <Input placeholder="请输入患者姓名" />
+                                <Input placeholder="请输入患者姓名" style={{ borderRadius: 4 }} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -275,14 +287,14 @@ const PatientList = () => {
                                 field="phone"
                                 rules={[{ required: true, message: '请输入手机号' }]}
                             >
-                                <Input placeholder="请输入手机号" />
+                                <Input placeholder="请输入手机号" style={{ borderRadius: 4 }} />
                             </Form.Item>
                         </Col>
                     </Row>
-                    <Row gutter={16}>
+                    <Row gutter={24}>
                         <Col span={8}>
                             <Form.Item label="性别" field="gender" initialValue="女">
-                                <Select>
+                                <Select style={{ borderRadius: 4 }}>
                                     <Select.Option value="女">女</Select.Option>
                                     <Select.Option value="男">男</Select.Option>
                                 </Select>
@@ -294,12 +306,12 @@ const PatientList = () => {
                                 field="age"
                                 rules={[{ required: true, message: '请输入年龄' }]}
                             >
-                                <Input type="number" placeholder="年龄" />
+                                <Input type="number" placeholder="年龄" style={{ borderRadius: 4 }} />
                             </Form.Item>
                         </Col>
                         <Col span={8}>
                             <Form.Item label="会员等级" field="level" initialValue="Standard">
-                                <Select>
+                                <Select style={{ borderRadius: 4 }}>
                                     <Select.Option value="Platinum">白金会员</Select.Option>
                                     <Select.Option value="Gold">黄金会员</Select.Option>
                                     <Select.Option value="Silver">白银会员</Select.Option>
@@ -309,7 +321,7 @@ const PatientList = () => {
                         </Col>
                     </Row>
                     <Form.Item label="备注" field="notes">
-                        <Input.TextArea placeholder="患者备注信息（过敏史、禁忌等）" rows={3} />
+                        <Input.TextArea placeholder="患者备注信息（过敏史、禁忌等）" rows={3} style={{ borderRadius: 4 }} />
                     </Form.Item>
                 </Form>
             </Modal>

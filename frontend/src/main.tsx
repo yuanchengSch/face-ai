@@ -8,11 +8,11 @@ import PatientList from './pages/patients/list';
 import PatientDetail from './pages/patients/detail';
 import AiConsult from './pages/ai-consult';
 import Login from './pages/login';
-import { isLoggedIn, removeToken, getToken } from './api/auth';
+import { isLoggedIn, removeToken } from './api/auth';
 
-import { Layout as ArcoLayout, Menu, Button, Avatar, Dropdown, Space, Breadcrumb, Message, Badge } from '@arco-design/web-react';
+import { Layout as ArcoLayout, Menu, Button, Avatar, Dropdown, Space, Breadcrumb, Divider } from '@arco-design/web-react';
 import {
-  IconDashboard, IconUserGroup, IconFacebook, IconPoweroff,
+  IconDashboard, IconUserGroup, IconFacebook,
   IconSettings, IconNotification, IconApps, IconUser
 } from '@arco-design/web-react/icon';
 
@@ -52,76 +52,88 @@ const MainLayout = () => {
   );
 
   return (
-    <ArcoLayout className="app-layout" style={{ height: '100vh', background: '#f0f2f5' }}>
+    <ArcoLayout className="app-layout" style={{ height: '100vh', background: 'var(--bg-color)' }}>
 
-      {/* 顶部导航栏 */}
+      {/* 顶部导航栏 - 增加阴影和高度 */}
       <Header style={{
-        height: 60,
-        background: '#fff',
-        borderBottom: '1px solid #e5e6eb',
+        height: 64,
+        background: 'rgba(255, 255, 255, 0.9)',
+        backdropFilter: 'blur(20px)',
+        borderBottom: '1px solid rgba(229, 230, 235, 0.5)',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '0 20px',
-        zIndex: 10
+        padding: '0 24px',
+        zIndex: 100,
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.02)',
+        position: 'sticky',
+        top: 0
       }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div
-            className="logo"
+          <img
+            src="/svg.png"
+            alt="智面诊"
             style={{
               width: 32,
               height: 32,
-              background: '#165DFF',
-              borderRadius: 4,
               marginRight: 12,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#fff',
-              fontWeight: 'bold',
-              fontSize: 20
+              objectFit: 'contain'
             }}
-          >
-            A
+          />
+          <div className="gradient-text" style={{ fontSize: 20, fontWeight: 700 }}>
+            智面诊
           </div>
-          <div style={{ fontSize: 18, fontWeight: 600, color: '#1d2129' }}>Arco 美容管理平台</div>
+          <Divider type="vertical" style={{ margin: '0 16px', height: 20, borderColor: '#e5e6eb' }} />
+          <div style={{ fontSize: 14, color: 'var(--text-secondary)', fontWeight: 400 }}>
+            中医美容管理平台
+          </div>
         </div>
 
         <Space size="large">
-          <Button shape="circle" icon={<IconNotification />} />
-          <Button shape="circle" icon={<IconSettings />} />
+          <Button shape="circle" type="text" icon={<IconNotification style={{ fontSize: 18, color: 'var(--text-primary)' }} />} />
+          <Button shape="circle" type="text" icon={<IconSettings style={{ fontSize: 18, color: 'var(--text-primary)' }} />} />
           <Dropdown droplist={dropList} position='br'>
-            <Avatar size={32} style={{ backgroundColor: '#165DFF', cursor: 'pointer' }}>
-              <IconUser />
-            </Avatar>
+            <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', padding: '4px 8px', borderRadius: 20, transition: 'all 0.3s' }} className="user-dropdown">
+              <Avatar size={32} style={{ backgroundColor: 'var(--primary-color)', marginRight: 8 }}>
+                <IconUser />
+              </Avatar>
+              <span style={{ fontSize: 14, color: 'var(--text-primary)', fontWeight: 500 }}>Admin</span>
+            </div>
           </Dropdown>
         </Space>
       </Header>
 
       <ArcoLayout>
-        {/* 左侧侧边栏 */}
+        {/* 左侧侧边栏 - 优化选中态 */}
         <Sider
-          width={220}
+          width={240}
           collapsed={collapsed}
           onCollapse={setCollapsed}
           collapsible
           trigger={null}
           breakpoint="xl"
-          style={{ background: '#fff', borderRight: '1px solid #e5e6eb' }}
+          style={{
+            background: 'rgba(255, 255, 255, 0.8)',
+            backdropFilter: 'blur(10px)',
+            borderRight: '1px solid rgba(229, 230, 235, 0.5)',
+            boxShadow: '2px 0 8px rgba(0,0,0,0.02)'
+          }}
         >
           <Menu
             selectedKeys={[getSelectedKey()]}
-            style={{ width: '100%', height: '100%' }}
+            style={{ width: '100%', height: '100%', background: 'transparent', padding: '16px 8px' }}
             onClickMenuItem={(key) => {
               if (key === '1') navigate('/dashboard');
               if (key === '2') navigate('/patients');
               if (key === '3') navigate('/ai-consult');
             }}
           >
+            <div style={{ padding: '0 12px 12px', fontSize: 12, color: 'var(--text-tertiary)' }}>MENU</div>
             <MenuItem key="1"><IconDashboard /> 数据看板</MenuItem>
             <MenuItem key="2"><IconUserGroup /> 患者中心</MenuItem>
             <MenuItem key="3"><IconFacebook /> AI 面诊演示</MenuItem>
-            {/* 模拟一些其他菜单项以填充视觉 */}
+
+            <div style={{ padding: '24px 12px 12px', fontSize: 12, color: 'var(--text-tertiary)' }}>MANAGEMENT</div>
             <MenuItem key="4"><IconApps /> 产品管理</MenuItem>
             <MenuItem key="5"><IconSettings /> 后台设置</MenuItem>
           </Menu>
@@ -129,23 +141,26 @@ const MainLayout = () => {
           <div
             style={{
               position: 'absolute',
-              bottom: 10,
-              left: 0,
-              width: '100%',
-              textAlign: 'center',
-              padding: 10,
-              borderTop: '1px solid #f2f3f5'
+              bottom: 16,
+              left: 16,
+              right: 16,
             }}
           >
-            <Button type="text" size="mini" onClick={() => setCollapsed(!collapsed)}>
+            <Button
+              long
+              type="outline"
+              size="mini"
+              onClick={() => setCollapsed(!collapsed)}
+              style={{ borderRadius: 8, borderColor: '#e5e6eb', color: 'var(--text-secondary)' }}
+            >
               {collapsed ? '展开' : '收起侧边栏'}
             </Button>
           </div>
         </Sider>
 
-        {/* 内容区域 */}
-        <ArcoLayout style={{ padding: '0 24px 24px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
+        {/* 内容区域 - 增加内边距 */}
+        <ArcoLayout style={{ padding: '0 24px 24px', overflow: 'hidden' }}>
+          <Breadcrumb style={{ margin: '4px 0', fontSize: 12, color: 'var(--text-tertiary)' }}>
             <Breadcrumb.Item>首页</Breadcrumb.Item>
             {location.pathname.startsWith('/dashboard') && <Breadcrumb.Item>数据看板</Breadcrumb.Item>}
             {location.pathname.startsWith('/patients') && <Breadcrumb.Item>患者中心</Breadcrumb.Item>}
@@ -153,7 +168,12 @@ const MainLayout = () => {
             {location.pathname.includes('/detail') || location.pathname.match(/\/patients\/\d+/) ? <Breadcrumb.Item>患者详情</Breadcrumb.Item> : null}
           </Breadcrumb>
 
-          <Content style={{ background: 'transparent', overflow: 'auto', minHeight: 'calc(100vh - 120px)' }}>
+          <Content style={{
+            background: 'transparent',
+            overflow: 'auto',
+            minHeight: 'calc(100vh - 140px)',
+            borderRadius: 'var(--border-radius-lg)',
+          }}>
             <Routes>
               <Route path="/" element={<Navigate to="/dashboard" />} />
               <Route path="/dashboard" element={<Dashboard />} />
@@ -162,6 +182,11 @@ const MainLayout = () => {
               <Route path="/ai-consult" element={<AiConsult />} />
             </Routes>
           </Content>
+
+          {/* 页脚 */}
+          <div style={{ textAlign: 'center', padding: '20px 0', color: 'var(--text-tertiary)', fontSize: 12 }}>
+            © 2025 智面诊 (Face AI SaaS). All Rights Reserved.
+          </div>
         </ArcoLayout>
       </ArcoLayout>
     </ArcoLayout>

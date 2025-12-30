@@ -60,45 +60,58 @@ const PatientDetail = () => {
                         style={{ fontSize: 16, color: '#4E5969', marginRight: 8 }}
                         onClick={() => navigate('/patients')}
                     />
-                    <Typography.Text style={{ fontSize: 14, color: '#86909C' }}>返回列表 / 患者详情</Typography.Text>
+                    <Space size={4}>
+                        <Typography.Text style={{ fontSize: 14, color: '#86909C', cursor: 'pointer' }} onClick={() => navigate('/patients')}>患者列表</Typography.Text>
+                        <Typography.Text style={{ fontSize: 14, color: '#C9CDD4' }}> / </Typography.Text>
+                        <Typography.Text style={{ fontSize: 14, color: '#1d2129', fontWeight: 500 }}>患者详情</Typography.Text>
+                    </Space>
                 </div>
                 <Space>
-                    <Button type="outline" icon={<IconFile />} onClick={() => setSurveyModalVisible(true)}>
+                    <Button type="outline" icon={<IconFile />} onClick={() => setSurveyModalVisible(true)} style={{ background: '#fff' }}>
                         定期问卷
                     </Button>
-                    <Button type="primary">保存更改</Button>
+                    <Button type="primary" style={{ boxShadow: '0 4px 10px rgba(22,93,255, 0.2)' }}>保存更改</Button>
                 </Space>
             </div>
 
             {/* 主布局 */}
-            <Row gutter={12}>
+            <Row gutter={20}>
                 {/* 左侧：基础信息 + AI 咨询 */}
                 <Col span={6}>
-                    <Space direction="vertical" size={12} style={{ width: '100%' }}>
+                    <Space direction="vertical" size={20} style={{ width: '100%' }}>
                         {/* 基础信息 */}
-                        <Card size="small">
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Avatar size={48} style={{ backgroundColor: '#165DFF', marginRight: 12 }}>
+                        <Card className="glass-card card-hover" bordered={false} bodyStyle={{ padding: 20 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 16 }}>
+                                <Avatar size={56} style={{ backgroundColor: '#165DFF', marginRight: 16, boxShadow: '0 4px 10px rgba(22,93,255,0.3)' }}>
                                     {patient.full_name[0]}
                                 </Avatar>
                                 <div>
-                                    <Typography.Title heading={6} style={{ margin: 0 }}>{patient.full_name}</Typography.Title>
-                                    <Space size={4} style={{ marginTop: 2 }}>
-                                        <Tag size="small" color="arcoblue">{patient.gender}</Tag>
-                                        <Tag size="small" color="gold"><IconStarFill /> {patient.level}</Tag>
+                                    <Typography.Title heading={5} style={{ margin: 0, marginBottom: 4 }}>{patient.full_name}</Typography.Title>
+                                    <Space size={4}>
+                                        <Tag size="small" color="arcoblue" bordered>{patient.gender}</Tag>
+                                        <Tag size="small" color="gold" bordered><IconStarFill /> {patient.level}</Tag>
                                     </Space>
                                 </div>
                             </div>
-                            <Divider style={{ margin: '12px 0' }} />
-                            <div style={{ fontSize: 12, color: '#4E5969', lineHeight: 1.8 }}>
-                                <div>📱 {patient.phone}</div>
-                                <div>💰 ¥{patient.total_consumption.toLocaleString()}</div>
-                                <div>📅 {patient.last_visit_at || '-'}</div>
+                            <Divider style={{ margin: '16px 0', borderBottom: '1px solid rgba(0,0,0,0.06)' }} />
+                            <div style={{ fontSize: 13, color: '#4E5969', lineHeight: 2 }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <span>手机号码</span>
+                                    <span style={{ color: '#1d2129', fontWeight: 500 }}>{patient.phone}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <span>累计消费</span>
+                                    <span style={{ color: '#1d2129', fontWeight: 500 }}>¥{patient.total_consumption.toLocaleString()}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <span>最近到访</span>
+                                    <span style={{ color: '#1d2129', fontWeight: 500 }}>{patient.last_visit_at || '-'}</span>
+                                </div>
                             </div>
                         </Card>
 
                         {/* AI 咨询 */}
-                        <div style={{ height: 500 }}>
+                        <div style={{ height: 550, borderRadius: 12, overflow: 'hidden' }} className="glass-card">
                             <ConsultationChat patientName={patient.full_name} />
                         </div>
                     </Space>
@@ -106,12 +119,16 @@ const PatientDetail = () => {
 
                 {/* 中间：个性化方案 */}
                 <Col span={12}>
-                    <PersonalizedPlan patientId={patient.id} />
+                    <div className="glass-card" style={{ height: '100%', minHeight: 700, borderRadius: 12, padding: 0 }}>
+                        <PersonalizedPlan patientId={patient.id} />
+                    </div>
                 </Col>
 
                 {/* 右侧：面诊趋势 */}
                 <Col span={6}>
-                    <ExamTrend patientId={patient.id} />
+                    <div className="glass-card" style={{ height: '100%', minHeight: 700, borderRadius: 12, padding: 0 }}>
+                        <ExamTrend patientId={patient.id} />
+                    </div>
                 </Col>
             </Row>
 
@@ -121,7 +138,7 @@ const PatientDetail = () => {
                 visible={surveyModalVisible}
                 onCancel={() => setSurveyModalVisible(false)}
                 footer={null}
-                style={{ width: 600 }}
+                style={{ width: 700, borderRadius: 12 }}
             >
                 <SurveyPanel patientId={patient.id} />
             </Modal>

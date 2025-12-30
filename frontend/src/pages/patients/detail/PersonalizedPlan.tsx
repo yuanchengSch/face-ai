@@ -115,14 +115,12 @@ const PersonalizedPlan: React.FC<PersonalizedPlanProps> = ({ patientId }) => {
             bodyStyle={{ padding: '12px 16px', height: 'calc(100% - 50px)', overflowY: 'auto' }}
         >
             {!plan ? (
-                <Empty
-                    description="暂无个性化方案"
-                    style={{ marginTop: 40 }}
-                >
-                    <Button type="primary" onClick={handleGenerate} loading={generating}>
+                <div style={{ textAlign: 'center', marginTop: 40 }}>
+                    <Empty description="暂无个性化方案" />
+                    <Button type="primary" onClick={handleGenerate} loading={generating} style={{ marginTop: 16 }}>
                         立即生成 AI 方案
                     </Button>
-                </Empty>
+                </div>
             ) : (
                 <>
                     {/* 方案头部信息 */}
