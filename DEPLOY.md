@@ -24,10 +24,32 @@ sudo yum install -y git
 ```
 
 ### 2. 安装 Docker & Docker Compose
-最快捷的安装方式是使用官方脚本：
+**方案 A：官方脚本（如果网络正常）**
 ```bash
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
+```
+
+**方案 B：阿里云镜像源（推荐国内服务器使用）**
+如果您遇到网络连接错误，请使用以下命令：
+```bash
+# 1. 安装工具
+sudo yum install -y yum-utils
+
+# 2. 添加阿里云 Docker 镜像源
+sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+
+# 3. 安装 Docker
+sudo yum install -y docker-ce docker-ce-cli containerd.io
+
+# 4. (可选) 配置 Docker 镜像加速器，加速镜像下载
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": ["https://registry.docker-cn.com"]
+}
+EOF
+sudo systemctl daemon-reload
 ```
 
 启动 Docker 并设置开机自启：
