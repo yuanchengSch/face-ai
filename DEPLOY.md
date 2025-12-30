@@ -42,14 +42,20 @@ sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/cen
 # 3. 安装 Docker
 sudo yum install -y docker-ce docker-ce-cli containerd.io
 
-# 4. (可选) 配置 Docker 镜像加速器，加速镜像下载
+# 4. **(重要) 配置 Docker 镜像加速器**
+# 国内服务器必须执行此步，否则会导致镜像拉取失败 (timeout)
 sudo mkdir -p /etc/docker
 sudo tee /etc/docker/daemon.json <<-'EOF'
 {
-  "registry-mirrors": ["https://registry.docker-cn.com"]
+  "registry-mirrors": [
+    "https://docker.m.daocloud.io",
+    "https://mirror.baidubce.com",
+    "https://docker.nju.edu.cn"
+  ]
 }
 EOF
 sudo systemctl daemon-reload
+sudo systemctl restart docker
 ```
 
 启动 Docker 并设置开机自启：
