@@ -14,6 +14,10 @@
 sudo apt-get update
 sudo apt-get install -y git
 
+# CentOS / Alibaba Cloud Linux / RHEL (您当前的系统很有可能是这个)
+sudo yum update -y
+sudo yum install -y git
+
 # CentOS / RHEL
 sudo yum update -y
 sudo yum install -y git
