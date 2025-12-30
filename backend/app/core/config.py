@@ -10,10 +10,10 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8  # 8 days
     
     # AI Provider - 魔搭社区 DeepSeek
-    MODELSCOPE_API_KEY: str = os.getenv("MODELSCOPE_API_KEY", "")
+    MODELSCOPE_API_KEY: str = os.getenv("MODELSCOPE_API_KEY", "ms-a081be97-f0cd-4b6c-a89e-020e2cefe6a0")
     MODELSCOPE_MODEL: str = os.getenv("MODELSCOPE_MODEL", "deepseek-ai/DeepSeek-V3.2")
     MODELSCOPE_BASE_URL: str = os.getenv("MODELSCOPE_BASE_URL", "https://api-inference.modelscope.cn/v1")
-    AI_PROVIDER: str = os.getenv("AI_PROVIDER", "mock")  # mock or modelscope
+    AI_PROVIDER: str = os.getenv("AI_PROVIDER", "modelscope")  # 使用真实 AI
     
     # CORS - 默认允许本地开发和常见部署场景
     BACKEND_CORS_ORIGINS: List[str] = ["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"]

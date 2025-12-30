@@ -1,10 +1,24 @@
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
+import json
 from app.models.plan import Plan, Survey
 from app.models.face_exam import FaceExam
 from app.services.timeline_service import TimelineService
 from app.utils.jieqi import JieqiUtils
 from app.ai.deepseek_provider import DeepSeekProvider
+
+def _parse_json_field(value):
+    """将 JSON 字段解析为字典（处理 SQLite 返回字符串的情况）"""
+    if value is None:
+        return {}
+    if isinstance(value, dict):
+        return value
+    if isinstance(value, str):
+        try:
+            return json.loads(value)
+        except:
+            return {}
+    return {}
 
 class PlanService:
     _ai_provider = None
@@ -40,7 +54,7 @@ class PlanService:
         }
         
         if latest_exam and latest_exam.metrics:
-            context["metrics"] = latest_exam.metrics
+            context["metrics"] = _parse_json_field(latest_exam.metrics)
             context["exam_advice"] = latest_exam.detailed_advice
         
         if recent_surveys:
@@ -86,27 +100,18 @@ class PlanService:
 
     def _generate_goal(self, exam: FaceExam, jieqi_advice: dict) -> str:
         """根据面诊结果和节气生成目标"""
-        import json
         goals = []
         
         if exam and exam.metrics:
-            metrics = exam.metrics
-            # 处理 metrics 可能是字符串的情况
-            if isinstance(metrics, str):
-                try:
-                    metrics = json.loads(metrics)
-                except:
-                    metrics = {}
-            
-            if isinstance(metrics, dict):
-                if metrics.get("hydration", 100) < 60:
-                    goals.append("提升水润度")
-                if metrics.get("inflammation", 0) > 40:
-                    goals.append("降低炎症风险")
-                if metrics.get("elasticity", 100) < 60:
-                    goals.append("增强皮肤弹性")
-                if metrics.get("pigmentation", 0) > 50:
-                    goals.append("改善色沉问题")
+            metrics = _parse_json_field(exam.metrics)
+            if metrics.get("hydration", 100) < 60:
+                goals.append("提升水润度")
+            if metrics.get("inflammation", 0) > 40:
+                goals.append("降低炎症风险")
+            if metrics.get("elasticity", 100) < 60:
+                goals.append("增强皮肤弹性")
+            if metrics.get("pigmentation", 0) > 50:
+                goals.append("改善色沉问题")
         
         if jieqi_advice and isinstance(jieqi_advice, dict):
             goals.append(jieqi_advice.get("focus", ""))
@@ -176,7 +181,7 @@ class PlanService:
         
         # 根据面诊结果添加针对性建议
         if exam and exam.metrics:
-            metrics = exam.metrics
+            metrics = _parse_json_field(exam.metrics)
             
             for phase in base_phases:
                 actions = phase.get("actions", {})

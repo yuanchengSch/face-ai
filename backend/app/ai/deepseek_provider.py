@@ -27,7 +27,7 @@ class DeepSeekProvider(BaseAIProvider):
         else:
             print("Warning: MODELSCOPE_API_KEY not set, will fall back to mock data")
     
-    def _call_api(self, messages: list, temperature: float = 0.7) -> str:
+    def _call_api(self, messages: list, temperature: float = 0.7, max_tokens: int = 1000) -> str:
         """调用魔搭 DeepSeek API"""
         if not self.client:
             return ""
@@ -37,8 +37,9 @@ class DeepSeekProvider(BaseAIProvider):
                 model=self.model,
                 messages=messages,
                 temperature=temperature,
-                max_tokens=2000,
-                stream=False  # 非流式，直接获取完整响应
+                max_tokens=max_tokens,
+                stream=False,
+                timeout=90  # 90秒超时
             )
             return response.choices[0].message.content
         except Exception as e:

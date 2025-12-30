@@ -3,7 +3,7 @@ import { Message } from '@arco-design/web-react';
 
 const request = axios.create({
     baseURL: 'http://localhost:8000/api/v1',
-    timeout: 30000,
+    timeout: 120000,  // 120秒，AI 生成需要更长时间
 });
 
 // 请求拦截器 - 添加 Token
