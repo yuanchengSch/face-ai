@@ -69,7 +69,7 @@ sudo docker compose version
 
 | 端口 | 说明 | 必需性 |
 | :--- | :--- | :--- |
-| **80** | HTTP Web 服务 | **必须** (用户访问入口) |
+| **3000** | HTTP Web 服务 | **必须** (用户访问入口) |
 | **8000** | 后端 API 调试/Swagger | 可选 (如果不公开调试可关闭) |
 | **22** | SSH 远程连接 | **必须** (用于远程登录) |
 
@@ -109,7 +109,7 @@ sudo docker compose ps
 您应该能看到 `face-ai-frontend` 和 `face-ai-backend` 都在 `Up` 状态。
 
 现在，您可以通过浏览器访问服务器的 IP 地址：
-*   **前端访问**：`http://<服务器IP>`
+*   **前端访问**：`http://<服务器IP>:3000`
 *   **后端 API**：`http://<服务器IP>:8000/docs` (Swagger 文档)
 
 ## 常见维护操作
