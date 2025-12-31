@@ -110,3 +110,83 @@ def init_admin(db: Session = Depends(get_db)):
     )
     
     return {"message": "管理员账号创建成功", "username": user.username}
+
+
+@router.post("/init-demo")
+def init_demo(db: Session = Depends(get_db)):
+    """
+    初始化演示数据（样例患者）
+    """
+    from app.models.patient import Patient
+    from datetime import datetime, timedelta
+    import random
+    
+    # 检查是否已有患者数据
+    existing = db.query(Patient).first()
+    if existing:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="演示数据已存在"
+        )
+    
+    # 样例患者数据
+    sample_patients = [
+        {
+            "full_name": "李婷婷",
+            "gender": "女",
+            "phone": "13812345678",
+            "age": 28,
+            "level": "Gold",
+            "total_consumption": 15800.0,
+            "notes": "对玻尿酸过敏，注意使用替代方案"
+        },
+        {
+            "full_name": "王晓明",
+            "gender": "男",
+            "phone": "13987654321",
+            "age": 35,
+            "level": "Platinum",
+            "total_consumption": 48500.0,
+            "notes": "长期客户，偏好微创项目"
+        },
+        {
+            "full_name": "张美丽",
+            "gender": "女",
+            "phone": "13611112222",
+            "age": 42,
+            "level": "Silver",
+            "total_consumption": 8200.0,
+            "notes": "首次尝试抗衰项目"
+        },
+        {
+            "full_name": "陈静怡",
+            "gender": "女",
+            "phone": "13722223333",
+            "age": 31,
+            "level": "Standard",
+            "total_consumption": 3500.0,
+            "notes": "皮肤敏感，需要温和方案"
+        },
+        {
+            "full_name": "刘芳华",
+            "gender": "女",
+            "phone": "13833334444",
+            "age": 26,
+            "level": "Gold",
+            "total_consumption": 12000.0,
+            "notes": "关注面部轮廓优化"
+        }
+    ]
+    
+    created_count = 0
+    for patient_data in sample_patients:
+        patient = Patient(
+            **patient_data,
+            last_visit_at=datetime.utcnow() - timedelta(days=random.randint(1, 30))
+        )
+        db.add(patient)
+        created_count += 1
+    
+    db.commit()
+    
+    return {"message": f"演示数据创建成功", "patients_created": created_count}
