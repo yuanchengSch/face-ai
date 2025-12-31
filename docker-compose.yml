@@ -7,9 +7,9 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=sqlite:///./sql_app.db
+      - DATABASE_URL=sqlite:///./data/sql_app.db
     volumes:
-      - ./backend/sql_app.db:/app/sql_app.db
+      - ./backend/data:/app/data
 
   frontend:
     build: ./frontend
