@@ -2,7 +2,8 @@ import axios from 'axios';
 import { Message } from '@arco-design/web-react';
 
 const request = axios.create({
-    baseURL: 'http://localhost:8000/api/v1',
+    // 生产环境使用相对路径（通过nginx代理），开发环境使用本地后端
+    baseURL: import.meta.env.VITE_API_BASE_URL || '/api/v1',
     timeout: 120000,  // 120秒，AI 生成需要更长时间
 });
 
